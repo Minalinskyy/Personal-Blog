@@ -1,0 +1,59 @@
+{% extends "blog/base.html" %}
+{% load blog_tags %}
+
+{% block title %}Our Blog{% endblock %}
+
+{% block body %}
+    <div class="col-md-12 post-title">
+            <h1> List of posts </h1>
+    </div>
+    <div class="post-snippet" style="border-bottom: 3px solid #e4e4e4">
+        <div class="row"></div>
+    </div>
+    {% if tag %}
+        <h2 class="post-title"> Posts tagged with "{{ tag.name }}" </h2>
+    {% endif %}
+    {% if posts.paginator.num_pages != 1 %}
+        {% include "./pagination_posts.html" with page=posts %}
+    {% endif %}
+    <div id="postlist">
+        {% for post in posts %}
+            <div class="post-snippet">
+                <div class="post-title">
+                        <span class="label">{{ post.publish.day }} {{ post.publish.month|month }}</span>
+                        <a href="{{ post.get_absolute_url }}">
+                            <h4 class="inline-block">{{ post.title }}</h4>
+                        </a>
+                </div>
+                <ul class="post-meta list-unstyled list-inline">
+                    <li>
+                        <i class="fa fa-user"></i>
+                        <span>by Minalinsky </span>
+                    </li>
+                </ul>
+                <blockquote> {{ post.description }} </blockquote>
+                <ul class="post-meta list-unstyled list-inline">
+                    <li><span>Tags:</span></li>
+                    {% for tag in post.tags.all %}
+                        <li><span>
+                            <a href="{% url "blog:post_list_by_tag" tag.slug %}">
+                                {{ tag.name }}
+                            </a>
+                        </span></li>
+                        {% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        <li><span>There isn't tag for this post yet.</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if posts.paginator.num_pages != 1 %}
+        {% include "./pagination_posts.html" with page=posts tags=tag %}
+    {% endif %}
+    <script>
+        $('#breadcrumbs').html('<a href="{% url 'blog:homepage' %}">Home</a>{{ title }}');
+        var actual = 1;
+    </script>
+{% endblock %}

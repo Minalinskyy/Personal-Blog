@@ -1,0 +1,61 @@
+{% extends "blog/base.html" %}
+{% block title %}Share a post{% endblock %}
+{% block body %}
+<script>
+    $('#breadcrumbs').html('<a href="{% url 'blog:homepage' %}">Home</a>{{ title }}');
+    function sendmessage(){
+        $.ajax({
+            type: "POST",
+            data: $("#form-message").serialize(),
+            url: "{% url 'blog:post_share' post.publish.year post.publish.month post.publish.day post.slug %}",
+            success: function(data){
+                if (data.success){
+                    $('#backmessage').text("The email has been succesfully sent to your friend.");
+                    $('#backmessage').addClass('alert-success');
+                    $('#backmessage').css("display","");
+                    $('[name="name"]').val('');
+                    $('[name="email"]').val('');
+                    $('[name="message"]').val('');
+                }else{
+                    $('#backmessage').text("Sending email error. Please contact author by jerry574638690@gmail.com");
+                    $('#backmessage').addClass('alert-danger');
+                    $('#backmessage').css("display","");
+                    $('[name="name"]').val('');
+                    $('[name="email"]').val('');
+                    $('[name="message"]').val('');
+                }
+            }
+        });
+    };
+</script>
+<div class="col-md-12 bordered_block bordered_wht_border white_txt">
+    <div class="over" data-opacity="0.6" data-color="#292929"></div>
+    <div class="col-md-12 simple_block text-left">
+        <h1>Share "{{ post.title }}" by e-mail</h1>
+        <form method="POST" id="form-message">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="text" name="name" class="form-control form-opacity" placeholder="Name*">
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="email" class="form-control form-opacity" placeholder="Your E-mail*">
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="to" class="form-control form-opacity" placeholder="Your Friend's E-mail*">
+                </div>
+                <div class="col-md-12">
+                    <textarea placeholder="Message" name="message" class="form-control form-opacity" rows="5"></textarea>
+                </div>
+                <div class="col-md-12">
+                    <input class="btn btn-white submit" value="Share" onclick="sendmessage()">
+                </div>
+            </div>
+            <div class="row">
+                <div class="alert" role="alert" id="backmessage" style="display: none;"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

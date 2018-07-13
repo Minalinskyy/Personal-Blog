@@ -1,0 +1,309 @@
+﻿{% load blog_tags %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %}</title>
+
+        <!-- Bootstrap CSS -->
+        <link href="{% static 'berg/css/bootstrap.css' %}" rel="stylesheet">
+        <link href="{% static 'berg/css/docs.min.css' %}" rel="stylesheet">
+
+        <!-- Font Awesome CSS -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link href="{% static 'berg/fonts/themify-icons.css' %}" rel="stylesheet">
+
+
+        <!-- Owl Carousel CSS -->
+        <link href="{% static 'berg/css/owl.carousel.css' %}" rel="stylesheet">
+
+        <!-- Magnific Popup core CSS file -->
+        <link rel="stylesheet" href="{% static 'berg/css/magnific-popup.css' %}">
+
+        <!-- Animate CSS -->
+        <link rel="stylesheet" href="{% static 'berg/css/animate.css' %}">
+
+
+        <!-- Theme CSS -->
+        <link href="{% static 'berg/css/style.css' %}" rel="stylesheet">
+
+        <!-- Google Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+
+
+        <!-- JQuery -->
+        <script src="{% static 'berg/js/jquery-1.11.3.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/clock.js' %}"></script>
+
+    </head>
+    <body>
+
+
+        <!-- Passpartu -->
+        <div class="passpartu passpartu_left"></div>
+        <div class="passpartu passpartu_right"></div>
+        <div class="passpartu passpartu_top"></div>
+        <div class="passpartu passpartu_bottom"></div>
+        <!-- Passpartu End -->
+
+        <div class="page" id="page">
+
+            <!-- Header -->
+            <header class="white_bck">
+
+                <!-- Logo -->
+                <div class="logo pull-left">
+                    <a href="{% url 'blog:homepage' %}"><b>Minalinsky</b></a>
+                </div>
+
+                <!-- Header Buttons -->
+                <div class="header_btns_wrapper">
+
+
+                    <!-- Main Menu Btn -->
+                    <div class="main_menu"><i class="ti-menu"></i><i class="ti-close"></i></div>
+
+                    <!-- Sub Menu -->
+                    <div class="sub_menu">
+                        <div class="sub_cont">
+                            <ul>
+                                <li><a href="{% url 'blog:homepage' %}" ><i class="fa fa-home" aria-hidden="true">  Home</i></a> </li>
+                                <li><a href="{% url 'blog:post_list_view' %}" ><i class="fab fa-blogger-b" aria-hidden="true">    Blog</i></a>   </li>
+                                <li><a class="parents"><i class="fa fa-book" aria-hidden="true">  Complete Project</i></a>
+                                    <ul class="mega_menu">
+                                        <li class="mega_sub">
+                                            <ul>
+                                                <li><a href="http://lostobjects.minalinsky.info"><i class="fa fa-bookmark" aria-hidden="true"></i>Lost Object System</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="{% url 'blog:author' %}"><i class="fa fa-user" aria-hidden="true">  About Author</i></a></li>
+                                <li><a href="{% url 'blog:subscribe' %}"><i class="far fa-laugh"> Subscribe</i></a></li>
+                                <li><a href="{% url 'blog:contact' %}"><i class="far fa-envelope" aria-hidden="true">  Contact</i></a>  </li>
+                                {% if user.is_authenticated %}
+                                    <li><a href="{% url 'blog:add_post' %}">New Post</a></li>
+                                    <li><a href="{% url 'blog:draft_post_list_view' %}">Drafts</a></li>
+                                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Sub Menu End -->
+                </div>
+                <!-- Header Buttons End -->
+
+                <!-- Up Arrow -->
+                <a href="#page" class="up_block go"><i class="fa fa-angle-up"></i></a>
+
+            </header>
+            <!-- Header End -->
+
+        <!--Title-->
+        <section class="boxes inside_title image_bck animate_left" data-image="{% static 'images/sky.jpg' %}" id="works">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12 no-padding">
+                        <div class="simple_block ">
+                            {% if title %}
+                                <div class="col-md-6"><h3>{{ title }}</h3></div>
+                            {% else %}
+                                <div class="col-md-6"><h3>{{ post.title }}</h3></div>
+                            {% endif %}
+                            <div class="col-md-6 text-right"><div id="breadcrumbs" class="breadcrumbs" style="font-size: 22px;"><a href="{% url 'blog:homepage' %}">Home</a></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--Title-->
+
+        <!-- Content -->
+        <div class="content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="bordered_block col-md-12 col-sm-12 grey_border" >
+
+                        <div class="container" >
+                            <div class="row" >
+                                <!--Sidebar-->
+                                <div class="col-md-9 col-md-push-3 col-xs-12" >
+                                    {% block body %} {% endblock %}
+                                </div>
+                                <!--Sidebar End-->
+
+                                <!--Sidebar-->
+                                <div class="col-md-3 col-md-pull-9 hidden-xs hidden-sm">
+                                    <div class="widget">
+                                        <h6 id="clock" style="font-size: 40px;"></h6>
+                                    </div>
+
+                                    <div class="widget">
+                                        <img src="{% static 'images/photoidentifi.jpg' %}">
+                                    </div>
+
+                                    <div class="widget">
+                                        <h6 class="title">About The Author</h6>
+                                        <p>
+                                            A chinese student from ESIGELEC, Rouen, France. Studing embedded system and web development.
+                                            Welcome everyone interested by my blog. Love new techniques!
+                                        </p>
+                                    </div>
+
+                                    <div class="widget">
+                                        <h6 class="title">Recent Posts</h6>
+                                        <ul class="list-unstyled recent-posts">
+                                            {% show_latest_posts 3 %}
+                                        </ul>
+                                    </div>
+                                    <br/><br/><br/>
+                                    <canvas id='rotatingGlobe' width='270' height="270" style="width:100%; cursor: move;"></canvas>
+                                </div>
+                                <!--Sidebar End-->
+                            </div>
+                            <!--Row End-->
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Row End -->
+
+            </div>
+        </div>
+        <!-- Content End -->
+
+
+        <!-- Footer -->
+        <div class="footer white_txt bordered_wht_border image_bck" data-color="#0e0e0e">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-md-3 col-sm-3">
+                        <div class="logo text-left">
+                            <a href="#"><b>Minalinsky</b></a>
+                        </div>
+                        A chinese student from ESIGELEC, Rouen, France. Study embedded system and web development.
+                        Welcome everyone interested by my blog. Love new techniques!
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 hidden-xs">
+                        <div class="widget">
+                            <h4>Recent Posts</h4>
+                            <ul class="list-unstyled">
+                                {% show_latest_posts 3 %}
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 hidden-xs">
+                        <div class="widget">
+                            <h4>Most commented posts</h4>
+                            <ul class="list-unstyled">
+                                {% most_commented_posts 3 %}
+                            </ul>
+                        </div>
+                        <!--end of widget-->
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 hidden-xs">
+                        <div class="widget">
+                            <h4>Contacts</h4>
+                            <i class="far fa-envelope" aria-hidden="true"></i>
+                            <span >jerry574638690@gmail.com</span>
+                            <br/>
+
+                            <a href="https://github.com/Minalinskyy" data-toggle="tooltip" data-placement="top" title="Github">
+                                <i class="fab fa-github" aria-hidden="true"></i>
+                                <span>&nbsp;Minalinskyy</span>
+                            </a><br/>
+
+                            <a href="https://www.linkedin.com/in/wentong-zhang-582a5b140/" data-toggle="tooltip" data-placement="top" title="LinkedIn">
+                                <i class="fab fa-linkedin" aria-hidden="true"></i>
+                                <span>&nbsp;ZHANG Wentong</span>
+                            </a><br/>
+
+                            <a href="https://stackoverflow.com/users/8331093/minalinsky" data-toggle="tooltip" data-placement="top" title="Stackoverflow">
+                                <i class="fab fa-stack-overflow" aria-hidden="true"></i>
+                                <span>&nbsp; Minalinsky</span>
+                            </a>
+                        </div>
+                        <!--end of widget-->
+                    </div>
+
+                </div>
+                <!--Row End-->
+
+            </div>
+            <!-- Container End -->
+
+            <!-- Footer Copyrights -->
+            <div class="footer_end">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-sm-12 text-right">
+                            <ul class="list-inline social-list">
+
+                                <li>
+                                    <a href="https://www.facebook.com/profile.php?id=100005846493751" data-toggle="tooltip" data-placement="top" title="Facebook">
+                                        <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://github.com/Minalinskyy" data-toggle="tooltip" data-placement="top" title="Github">
+                                        <i class="fab fa-github" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://stackoverflow.com/users/8331093/minalinsky" data-toggle="tooltip" data-placement="top" title="Stackoverflow">
+                                        <i class="fab fa-stack-overflow" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.linkedin.com/in/wentong-zhang-582a5b140/" data-toggle="tooltip" data-placement="top" title="LinkedIn">
+                                        <i class="fab fa-linkedin" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Copyrights End -->
+
+
+        </div>
+        <!-- Footer End -->
+
+
+        </div>
+        <!-- Page End -->
+
+        <!-- WL Carousel JS -->
+        <script src="{% static 'berg/js/owl.carousel.min.js' %}"></script>
+        <!-- PrefixFree -->
+        <script src="{% static 'berg/js/prefixfree.min.js' %}"></script>
+        <!-- Magnific Popup core JS file -->
+        <script src="{% static 'berg/js/jquery.magnific-popup.min.js' %}"></script>
+        <!-- Textillate -->
+        <script src="{% static 'berg/js/jquery.lettering.js' %}"></script>
+        <!-- Countdown -->
+        <script src="{% static 'berg/js/jquery.plugin.min.js' %}"></script>
+        <script src="{% static 'berg/js/jquery.countdown.min.js' %}"></script>
+        <!-- JQuery UI -->
+        <script src="{% static 'berg/js/jquery-ui.js' %}"></script>
+        <!-- Wow -->
+        <script src="{% static 'berg/js/wow.js' %}"></script>
+        <!-- Masonry -->
+        <script src="{% static 'berg/js/masonry.pkgd.min.js' %}"></script>
+        <!-- Bootstrap JS -->
+        <script src="{% static 'berg/js/bootstrap.min.js' %}"></script>
+        <!-- Theme JS -->
+        <script src="{% static 'berg/js/script.js' %}"></script>
+    </body>
+</html>

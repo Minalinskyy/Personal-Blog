@@ -1,0 +1,25 @@
+{% extends "blog/base.html" %}
+{% load staticfiles %}
+{% block title %}Add a post{% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <form action="." method="post">
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form.as_p }}
+            <input type="submit" value="Save">
+        </form>
+    {% else %}
+        <a href="{% url 'blog:post_list_view' %}">Only author of this site can post</a>
+    {% endif %}
+
+    <script>
+    $(document).ready(function(){
+        $("#id_title").on("paste keyup", function(){
+            context = $(this).val().split(" ").join("-").toLowerCase();
+            $("#id_slug").val(context);
+        });
+    });
+    </script>
+{% endblock %}

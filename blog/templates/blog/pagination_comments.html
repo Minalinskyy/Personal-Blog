@@ -1,0 +1,109 @@
+{% load blog_tags %}
+<div class="text-center">
+    <ul class="pagination">
+        <li class="li_previous">
+            <span aria-hidden="true" onclick="previouspage()">&laquo;</span>
+        </li>
+
+         {% for i in page.paginator.num_pages|range %}
+            {% if forloop.counter == page.number %}
+                <li class="linumber" name="linumber{{ forloop.counter }}">
+                    <span onclick="turntopage(this)">{{ forloop.counter }}</span>
+                </li>
+            {% else %}
+                <li class="linumber" name="linumber{{ forloop.counter }}">
+                    <span onclick="turntopage(this)">{{ forloop.counter }}</span>
+                </li>
+            {% endif %}
+        {% endfor %}
+        <li class="li_next">
+            <span aria-hidden="true" onclick="nextpage()">&raquo;</span>
+        </li>
+    </ul>
+</div>
+
+<script>
+    $("[name=linumber"+actual+"]").addClass("active");
+    var max = {{ page.paginator.num_pages }};
+    if(actual == 1){
+        $(".li_previous").css("display","none");
+    }else if(actual == max){
+        $(".li_next").css("display","none");
+    }
+    function turntopage(s){
+        var newpage = $(s).text();
+        $.ajax({
+            type: "GET",
+            data: {},
+            url: "{% url 'blog:comment_single_page' post.publish.year post.publish.month post.publish.day post.slug 123 %}".replace(123, newpage.toString()),
+            dataType: 'json',
+            success: function(data){
+                if (data.success){
+                    $("#comment_zone").html(data.success);
+                    $(".linumber").removeClass("active");
+                    $("[name=linumber"+newpage+"]").addClass("active");
+                    $(".li_previous").css("display","");
+                    $(".li_next").css("display","");
+                    if(newpage == 1){
+                        $(".li_previous").css("display","none");
+                    }else if(newpage == max){
+                        $(".li_next").css("display","none");
+                    }
+                    actual = data.page;
+                }else{
+                    alert("Pagination comments error! Please contact the author by jerry574638690@gmail.com");
+                }
+            }
+        });
+    };
+    function previouspage(){
+        $.ajax({
+            type: "GET",
+            data: {},
+            url: "{% url 'blog:comment_single_page' post.publish.year post.publish.month post.publish.day post.slug 123 %}".replace(123, (actual-1).toString()),
+            dataType: 'json',
+            success: function(data){
+                if (data.success){
+                    actual -= 1;
+                    $("#comment_zone").html(data.success);
+                    $(".linumber").removeClass("active");
+                    $("[name=linumber"+actual+"]").addClass("active");
+                    $(".li_previous").css("display","");
+                    $(".li_next").css("display","");
+                    if(actual == 1){
+                        $(".li_previous").css("display","none");
+                    }else if(actual == max){
+                        $(".li_next").css("display","none");
+                    }
+                }else{
+                    alert("Pagination comments error! Please contact the author by jerry574638690@gmail.com");
+                }
+            }
+        });
+    };
+    function nextpage(){
+        $.ajax({
+            type: "GET",
+            data: {},
+            url: "{% url 'blog:comment_single_page' post.publish.year post.publish.month post.publish.day post.slug 123 %}".replace(123, (actual+1).toString()),
+            dataType: 'json',
+            success: function(data){
+                if (data.success){
+                    actual += 1;
+                    $("#comment_zone").html(data.success);
+                    $(".linumber").removeClass("active");
+                    $("[name=linumber"+actual+"]").addClass("active");
+                    $(".li_previous").css("display","");
+                    $(".li_next").css("display","");
+                    if(actual == 1){
+                        $(".li_previous").css("display","none");
+                    }else if(actual == max){
+                        $(".li_next").css("display","none");
+                    }
+                }else{
+                    alert("Pagination comments error! Please contact the author by jerry574638690@gmail.com");
+                }
+            }
+        });
+    };
+</script>

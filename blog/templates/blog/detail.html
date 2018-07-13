@@ -1,0 +1,335 @@
+{% extends "blog/base.html" %}
+{% load blog_tags %}
+{% load staticfiles %}
+
+{% block title %}{{ post.title }}{% endblock %}
+{% block body %}
+
+<!-- Post section -->
+<section class="boxes">
+    <div class="container-fluid">
+        <!-- Title and description -->
+        <div class="row">
+            <div class="col-md-12 " data-color="#f4f4f4">
+                <div class="container">
+                    <div class="row">
+                            <h2>{{ post.title }}</h2>
+                            <p>Published {{ post.publish.day }} {{ post.publish.month|month }} {{ post.publish.year }}</p>
+                            <h4 class="subtitle">{{ post.description }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Title and description End -->
+
+        <!-- Post Body -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container">
+                    <div class="row">
+                        {% if user.is_authenticated %}
+                            <a href="{% url "blog:edit_post" post.publish.year post.publish.month post.publish.day post.slug %}">Edit this post</a>
+                        {% endif %}
+                        <p>{{ post.body| safe }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Post Body End -->
+
+     </div>
+</section>
+<!-- Post Section End -->
+
+<!-- Tag Section -->
+<section class="boxes">
+    <div class="container-fluid">
+        <!-- Tag Display -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container">
+                    <div class="row">
+                        <p>Tags: </p>
+                        <p id="tags">
+                            {% for tag in post.tags.all %}
+                                <a href="{% url "blog:post_list_by_tag" tag.slug %}">
+                                    {{ tag.name }}
+                                </a>
+                                {% if not forloop.last %}, {% endif %}
+                            {% empty %}
+                                 There isn't tag for this post yet.
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Tag Display End -->
+
+        <!-- Add Tag And Share-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container">
+                    <div class="row">
+                        <button onclick="tagFunction()"> + tags </button>
+                        <form action="." method="post" style="display: none;" id="addtag">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="id_tagname">New tag:</label>
+                                    <input type="text" name="tagname" maxlength="50" required id="id_tagname" style="text-transform: lowercase">
+                                </div>
+                                <div class="col-xs-12">
+                                    <input class="btn-submit btn-default btn" value="Ok" onclick="addtag()">
+                                </div>
+                                <script>
+                                    function addtag(){
+                                        var input = $("#id_tagname").val().toLowerCase()
+                                        if($("#tags").find('a').length != 0 && $("#tags").html().indexOf(input) != -1){
+                                            alert("This tag is already tagged for this post.")
+                                        }else{
+                                            $.ajax({
+                                                type: "POST",
+                                                data: $("#addtag").serialize(),
+                                                url: "{% url 'blog:addtag' post.publish.year post.publish.month post.publish.day post.slug %}",
+                                                dataType: 'json',
+                                                success: function(data){
+                                                    if (data.success){
+                                                        $("#addtag").css("display","none");
+                                                        tagslug = $("#id_tagname").val().toLowerCase().toString().split(' ').join('-');
+                                                        url = "{% url 'blog:post_list_by_tag' 123 %}".replace(123, tagslug);
+                                                        if($("#tags").find('a').length == 0){
+                                                            $("#tags").html("<a href='"+url+"'>"+$("#id_tagname").val().toLowerCase().toString()+"</a>");
+                                                        }else{
+                                                            $("#tags").html($("#tags").html()+', '+"<a href='"+url+"'>"+$("#id_tagname").val().toLowerCase().toString()+"</a>");
+                                                        }
+                                                        $("#id_tagname").val('');
+                                                    }else{
+                                                        alert('Add tag failed, please contact author with jerry574638690@gmail.com thanks')
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    };
+                                </script>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row">
+                        <i class="fas fa-share"></i><a href="{% url "blog:post_share" post.publish.year post.publish.month post.publish.day post.slug %}"> Share By Email </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Add Tag End And Share -->
+    </div>
+</section>
+<!-- Tag Section End -->
+
+<!-- Similar Posts Section -->
+<section class="box" style="background-color: #ffffff">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container">
+                    <h2>Maybe You Will Like:</h2>
+                        {% for post in similar_posts %}
+                            <div class="post-snippet" >
+                                <div class="post-title">
+                                        <span class="label">{{ post.publish.day }} {{ post.publish.month|month }}</span>
+                                        <a href="{{ post.get_absolute_url }}">
+                                            <h4 class="inline-block">{{ post.title }}</h4>
+                                        </a>
+                                </div>
+                                <ul class="post-meta list-unstyled list-inline">
+                                    <li>
+                                        <i class="fa fa-user"></i>
+                                        <span>by Minalinsky </span>
+                                    </li>
+                                </ul>
+                                <blockquote> {{ post.description }} </blockquote>
+                            </div>
+                        {% empty %}
+                             There are no similar post yet.
+                        {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Similar Posts Section End -->
+
+<!-- csrf setting for ajax -->
+<script>
+    $.ajaxSetup({
+      headers: { "X-CSRFToken": '{{csrf_token}}' }
+    });
+</script>
+
+<!-- Comment Section -->
+<section class="comments clearfix" style="background-color: #ffffff">
+    <section class="form-comment">
+        <div class="form-comment-title">
+            <h3 class="title">Leave a Comments</h3>
+        </div>
+        <form id="form-comment" class="form-validate" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="name">
+                        <input type="text" placeholder="Your Name" name="name" class="form-control" required>
+                    </div>
+                    <div class="mail">
+                        <input type="email" placeholder="Your Email" name="email" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="message">
+                        <textarea placeholder="Your Message" rows="8" class="control form-control" id="body" name="body" required></textarea>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-submit">
+                        <input class="btn-submit btn-default btn" value="SUBMIT COMMENT" onclick="writecomment()">
+                    </div>
+                </div>
+                <script>
+                    function writecomment(){
+                        $.ajax({
+                            type: "POST",
+                            data: $("#form-comment").serialize(),
+                            url: "{% url 'blog:add_comment' post.publish.year post.publish.month post.publish.day post.slug %}",
+                            dataType: 'json',
+                            success: function(data){
+                                if (data.success){
+                                    $("#comment_zone").html(data.success);
+                                    $("[name='name']").val('');
+                                    $("[name='email']").val('');
+                                    $("[name='body']").val('');
+                                }else{
+                                    alert("Saving comment error! Please contact the author by jerry574638690@gmail.com");
+                                }
+                            }
+                        });
+                    };
+                </script>
+            </div>
+        </form>
+    </section>
+    <br/><br/>
+    <div class="comments-title">
+        <h3 class="title">Comments</h3>
+    </div>
+    <div id="comment_zone">
+        {% for comment in comments %}
+            <div class="comments-content">
+                <div class="content-cmt">
+                    <div class="answer">
+                        <span class="name-cmt">{{ comment.name }}</span>
+                        <span class="date-cmt">{{ comment.created|timesince }} ago</span>
+                        <p class="content-reply">  {{ comment.body }}  </p>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'blog:delete_comment' post.publish.year post.publish.month post.publish.day post.slug comment.id %}"> Delete this comment </a><br/>
+                        {% endif %}
+                        <span onclick="replyformFunction({{ comment.id }})">Reply</span>
+                        <form method="post" style="display: none;" id="replyform{{ comment.id }}">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="name">
+                                        <input type="text" placeholder="Your Name" name="name" class="form-control" required>
+                                    </div>
+                                    <div class="mail">
+                                        <input type="email" placeholder="Your Email" name="email" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="message">
+                                        <textarea placeholder="Your Reply" rows="8" class="control form-control" id="body" name="body" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="form-submit">
+                                        <input class="btn-submit btn-default btn" value="Reply" onclick="reply({{ comment.id }})">
+                                    </div>
+                                </div>
+                                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                                <script>
+                                    function reply(id){
+                                        $.ajax({
+                                            type: "POST",
+                                            data: $("#replyform"+id).serialize(),
+                                            url: "{% url 'blog:add_comment' post.publish.year post.publish.month post.publish.day post.slug %}",
+                                            dataType: 'json',
+                                            success: function(data){
+                                                if (data.success){
+                                                    $("#replyzone"+id).append(data.success);
+                                                    showreplyFunction(id, data.max);
+                                                    replyformFunction(id);
+                                                    $("[name='name']").val('');
+                                                    $("[name='email']").val('');
+                                                    $("[name='body']").val('');
+                                                }else{
+                                                    alert("Saving comment error! Please contact the author by jerry574638690@gmail.com");
+                                                }
+                                            }
+                                        });
+                                    };
+                                </script>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="replyzone{{ comment.id }}">
+                        {% for child_comment in comment.children %}
+                            {% if forloop.counter < 4 %}
+                                <div class="reply" id="reply{{ comment.id }}_{{ forloop.counter }}">
+                                    <div class="content-cmt">
+                                        <span class="name-cmt">{{ child_comment.name }}</span>
+                                        <span class="date-cmt">{{ child_comment.created|timesince }} ago</span>
+                                        <p class="content-reply">  {{ child_comment.body }}  </p>
+                                        {% if user.is_authenticated %}
+                                            <a href="{% url 'blog:delete_comment' post.publish.year post.publish.month post.publish.day post.slug child_comment.id %}"> Delete this comment </a><br/>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="reply" id="reply{{ comment.id }}_{{ forloop.counter }}" style="display: none">
+                                    <div class="content-cmt">
+                                        <span class="name-cmt">{{ child_comment.name }}</span>
+                                        <span class="date-cmt">{{ child_comment.created|timesince }} ago</span>
+                                        <p class="content-reply">  {{ child_comment.body }}  </p>
+                                        {% if user.is_authenticated %}
+                                            <a href="{% url 'blog:delete_comment' post.publish.year post.publish.month post.publish.day post.slug child_comment.id %}"> Delete this comment </a><br/>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% if comment.children|length > 3 %}
+                        <p id="showreply{{ comment.id }}" onclick="showreplyFunction({{ comment.id }}, {{ comment.children|length }})"> Show more </p>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p>There are no comments yet.</p>
+        {% endfor %}
+    </div>
+
+</section>
+<script>
+    $('#breadcrumbs').html('<a href="{% url 'blog:homepage' %}">Home</a><a href="{% url 'blog:post_list_view' %}">Blog</a>{{ post.title }}');
+    {% if page %}
+        var actual = {{ page }};
+    {% else %}
+        var actual = 1;
+    {% endif %}
+</script>
+<!-- Comment Section End -->
+{% if comments.paginator.num_pages != 1 %}
+    {% include "./pagination_comments.html" with page=comments post=post %}
+{% endif %}
+<script src="{% static 'blog/js/detail.js' %}"></script>
+
+{% endblock %}

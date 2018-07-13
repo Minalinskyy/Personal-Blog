@@ -1,0 +1,60 @@
+{% extends "blog/base.html" %}
+{% load staticfiles %}
+{% block title %} Homepage {% endblock %}
+{% block body %}
+<!-- Welcome -->
+<section class="boxes" id="welcome">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Col -->
+            <div class="col-md-12">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h2>Welcome To Minalinsky's Blog</h2>
+                            <h4 class="subtitle"> First time coming? </h4>
+                            <p>This is a personal blog website produced by myself.
+                                I'll often post something interesting about the programming with some examples codes.
+                                If you have any question or suggestion, I'll appreciate you so much to use the Contact page
+                                to talk with me :)</p>
+                            <h5> Published 09 July 2018</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Col End -->
+        </div>
+
+        <!-- Welcome Image -->
+        <div class="intro_image intro_text_rb text-center z0 wow fadeInUp" data-wow-duration="2s">
+            <img src="{% static 'images/author.png' %}" alt="author's photo" style="height: auto; width: auto;">
+        </div>
+    </div>
+</section>
+<!-- Welcome End -->
+<br/><br/>
+<!-- Presentation -->
+<section class="boxes" id="presentation">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Col -->
+            <div class="col-md-12">
+                <div class="container">
+                    <div class="row">
+                        <h4>In my blog, we don't need an account system :) All posted articles are free to you.</h4><br/>
+                        <h4>You can comment any post only with your email address, your username which will be seen by other visitors and the comment.</h4><br/>
+                        <h4>And once your comment was replied by me or other visitor, you will receive an email to let you check with the link of the post.</h4><br/>
+                        <h4>If you think my blog is interested, the Subscribe page is also possible on the top side of the page. </h4><br/>
+                        <h4>After subscribing, you will be told immediately by email once I post a new article.</h4><br/>
+                        <h4>Thanks for your visit. Enjoy yourself :)</h4>
+                        <br/><br/>
+                        <h5>P.S. All the code of this website is in my Github. Welcome to anyone who has a technical question.</h5>
+                    </div>
+                </div>
+            </div>
+            <!-- Col End -->
+        </div>
+    </div>
+</section>
+<!-- Presentation End -->
+{% endblock %}

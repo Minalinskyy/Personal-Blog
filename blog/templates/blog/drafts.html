@@ -1,0 +1,40 @@
+{% extends "blog/base.html" %}
+{% load blog_tags %}
+
+{% block title %} Draft Posts {% endblock %}
+
+{% block body %}
+
+{% if user.is_authenticated %}
+     {% if posts.paginator.num_pages != 1 %}
+        {% include "./pagination_drafts.html" with page=posts %}
+    {% endif %}
+    <div id="draftlist">
+        {% for post in posts %}
+            <div class="post-snippet">
+                <div class="post-title">
+                    <span class="label">{{ post.updated.day }} {{ post.updated.month|month }}</span>
+                    <h3>
+                        <a href="{% url 'blog:edit_draft' post.updated.year post.updated.month post.updated.day post.slug %}">
+                            <h4 class="inline-block">{{ post.title }}</h4>
+                        </a>
+                    </h3>
+                    <p class="small" style="color: #777777">Last modified {{ post.updated }}</p>
+                </div>
+                <blockquote> {{ post.description }} </blockquote>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if posts.paginator.num_pages != 1 %}
+        {% include "./pagination_drafts.html" with page=posts %}
+    {% endif %}
+    <script>
+        $('#breadcrumbs').html('<a href="{% url 'blog:homepage' %}">Home</a>{{ title }}');
+        var actual = 1;
+    </script>
+{% else %}
+    <a href="{% url 'blog:post_list_view' %}">Only author can see the drafts</a>
+{% endif %}
+
+{% endblock %}

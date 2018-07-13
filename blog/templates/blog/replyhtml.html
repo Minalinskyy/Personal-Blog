@@ -1,0 +1,11 @@
+{% if loop <= 3 %}
+<div class="reply" id="reply{{ id }}_{{ loop }}">
+{% else %}
+<div class="reply" id="reply{{ id }}_{{ loop }}" style="display: none">
+{% endif %}
+    <div class="content-cmt">
+        <span class="name-cmt">{{ comment.name }}</span>
+        <span class="date-cmt">{{ comment.created|timesince }}</span>
+        <p class="content-reply">  {{ comment.body }}  </p>
+    </div>
+</div>

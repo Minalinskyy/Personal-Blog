@@ -1,0 +1,158 @@
+{% extends "blog/base.html" %}
+{% load staticfiles %}
+{% block title %} About author {% endblock %}
+
+{% block body %}
+<script>
+    $('#breadcrumbs').html('<a href="{% url 'blog:homepage' %}">Home</a>{{ title }}');
+</script>
+
+<!-- personal information -->
+<style>
+    .boxes p {font-size: 20px;}
+</style>
+<section class="boxes">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Col -->
+            <div class="col-md-12 bordered_block grey_border">
+                <div class="container">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <h2 class="subtitle">Personal Information</h2>
+                            <p>I'm a chinese student from ESIGELEC, Rouen, France. Studing embedded system and web development.
+                                Keeping interested in all new technologies and prefer to try them than only discussing.</p>
+                            <p>Like others, hobby is an important part of my life. Travelling, sport and programing are my most favourite activities.</p>
+                        </div>
+                        <br/><br/>
+                        <div class="row">
+                            <h2 class="subtitle">Job Experience</h2>
+                            <p>I'm a real newbie of programming area.(Although almost 3 years for me, still not enough by myself)</p>
+                            <p>So at the moment, the only job experience for me of programing is my internship in the summer of 2017. It's an internship about
+                            debugging a running Symfony2-based web site and insert something new. It's really important experience for me because I learned
+                                so much during the internship.</p>
+                        </div>
+                        <br/><br/>
+                        <div class="row">
+                            <h2 class="subtitle">The projects I've participated in</h2>
+                            <p>I have participated in some projects during education, or by myself. I'll choice some of them to explain here.</p>
+                            <p>P.S. The code of all these projects are put in my Github. The link of my Github will be in this page in next part.</p>
+                            <h3 class="subtitle">Lost Object Web Site</h3>
+                            <blockquote>
+                              <p>This was my first project of web site programming. Based of PHP5 without framework and MySQL. It had a login system and it was build for the students
+                              of a school to declare lost private objects and to look for if someone else found it and posted it on this website. There was also an administrator
+                               who can manage the found and declared objects.</p>
+                                <p>Everyone can have a try of it because I put it in a server. You can go to this site by the link on the top of page (Complete Project)</p>
+                            </blockquote>
+                            <h3 class="subtitle">Web Crawler</h3>
+                            <blockquote>
+                                <p>I did this project by myself only because my school's schedule pushing stream is always so unstable. So I tried to use Python to write
+                                a script to download the information of my schedule and save them into a .ics file as the source of my GoogleCalendar. What a clever idea :)</p>
+                                <p>In this project I studied a lot of Python programming and third-party libraries. I used Selenium to download the data and BeautifulSoup4 to
+                                    analyse them. And also to make this script automatically run in the server, I got the usage of crontab in linux system.</p>
+                            </blockquote>
+                            <h3 class="subtitle">A real-time face recognition with Deep-Learning</h3>
+                            <blockquote>
+                                <p>This was a project finally realised on Raspberry Pi. I built a model of CNN (Convolutional Neural Network) and trained it with the photos of my
+                                group members. Finally I used this model with a script written by myself on Raspberry Pi with an Pi-camera. The accuracy of the face recognition was
+                                over 90%.</p>
+                                <p>Here is a demo video of it.</p>
+                                <div class="embed-video-container embed-responsive">
+                                    <iframe src="https://www.youtube.com/embed/rY_uSFl2TcA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                </div>
+                            </blockquote>
+                        </div>
+                        <div class="row">
+                            <h2 class="subtitle">Used programming language and frameworks</h2>
+                            <p>Here are progress bars of my knowledge about programming language and frameworks.</p>
+                            <div class="col-md-6 text-center">
+                                <h4 class="subtitle">Languages</h4>
+                                <div class="progress">
+                                  <div class="progress-bar text-right" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
+                                    <span>Python 85%</span>
+                                  </div>
+                                </div>
+                                <div class="progress">
+                                  <div class="progress-bar text-right" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
+                                    <span>C/C++ 65%</span>
+                                  </div>
+                                </div>
+                                <div class="progress">
+                                  <div class="progress-bar text-right" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
+                                    <span>Java 65%</span>
+                                  </div>
+                                </div>
+                                <div class="progress">
+                                  <div class="progress-bar text-right" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                                    <span>Html/Css/Javascript 60%</span>
+                                  </div>
+                                </div>
+                                <div class="progress">
+                                  <div class="progress-bar text-right" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                                    <span>Sql 60%</span>
+                                  </div>
+                                </div>
+                                <div class="progress">
+                                  <div class="progress-bar text-right" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                                    <span>VHDL 60%</span>
+                                  </div>
+                                </div>
+                                <div class="progress">
+                                  <div class="progress-bar text-right" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    <span>GO 30%</span>
+                                  </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 text-center">
+                                <h4 class="subtitle">Frameworks and libraries</h4>
+                                <div class="progress">
+                                  <div class="progress-bar text-right" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                    <span>Django, Flask 75%</span>
+                                  </div>
+                                </div>
+                                <div class="progress">
+                                  <div class="progress-bar text-right" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+                                    <span>Selenium, BeautifulSoup 70%</span>
+                                  </div>
+                                </div>
+                                <div class="progress">
+                                  <div class="progress-bar text-right" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+                                    <span>Symfony, Laravel 70%</span>
+                                  </div>
+                                </div>
+                                <div class="progress">
+                                  <div class="progress-bar text-right" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+                                    <span>JQuery, Bootstrap 70%</span>
+                                  </div>
+                                </div>
+                                <div class="progress">
+                                  <div class="progress-bar text-right" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                                    <span>Deep-learning 50%</span>
+                                  </div>
+                                </div>
+                                <div class="progress">
+                                  <div class="progress-bar text-right" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                                    <span>NodeJS, AngularJS 40%</span>
+                                  </div>
+                                </div>
+                                <div class="progress">
+                                  <div class="progress-bar text-right" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                                    <span>Micro-controller 40%</span>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <p>And finally I post my Resume here.</p>
+                            <object width="100%" height="1050" data="{% static 'file/resume.pdf' %}"></object>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Col End -->
+        </div>
+    </div>
+</section>
+
+{% endblock %}

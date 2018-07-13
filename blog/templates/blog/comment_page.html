@@ -1,0 +1,91 @@
+<div id="comment_zone">
+    {% for comment in comments %}
+        <div class="comments-content">
+            <div class="content-cmt">
+                <div class="answer">
+                    <span class="name-cmt">{{ comment.name }}</span>
+                    <span class="date-cmt">{{ comment.created|timesince }} ago</span>
+                    <p class="content-reply">  {{ comment.body }}  </p>
+                    <span onclick="replyformFunction({{ comment.id }})">Reply</span>
+                    <form method="post" style="display: none;" id="replyform{{ comment.id }}">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="name">
+                                    <input type="text" placeholder="Your Name" name="name" class="form-control" required>
+                                </div>
+                                <div class="mail">
+                                    <input type="email" placeholder="Your Email" name="email" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="message">
+                                    <textarea placeholder="Your Reply" rows="8" class="control form-control" id="body" name="body" required></textarea>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="form-submit">
+                                    <input class="btn-submit btn-default btn" value="Reply" onclick="reply({{ comment.id }})">
+                                </div>
+                            </div>
+                            <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                            <script>
+                                function reply(id){
+                                    $.ajax({
+                                        type: "POST",
+                                        data: $("#replyform"+id).serialize(),
+                                        url: "{% url 'blog:add_comment' post.publish.year post.publish.month post.publish.day post.slug %}",
+                                        dataType: 'json',
+                                        success: function(data){
+                                            if (data.success){
+                                                $("#replyzone"+id).append(data.success);
+                                                showreplyFunction(id, data.max);
+                                                replyformFunction(id);
+                                                $("[name='name']").val('');
+                                                $("[name='email']").val('');
+                                                $("[name='body']").val('');
+                                            }else{
+                                                alert("Saving comment error! Please contact the author by jerry574638690@gmail.com");
+                                            }
+                                        }
+                                    });
+                                };
+                            </script>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="replyzone{{ comment.id }}">
+                    {% for child_comment in comment.children %}
+                        {% if forloop.counter < 4 %}
+                            <div class="reply" id="reply{{ comment.id }}_{{ forloop.counter }}">
+                                <div class="content-cmt">
+                                    <span class="name-cmt">{{ child_comment.name }}</span>
+                                    <span class="date-cmt">{{ child_comment.created|timesince }} ago</span>
+                                    <p class="content-reply">  {{ child_comment.body }}  </p>
+                                    {% if user.is_authenticated %}
+                                        <a href="{% url 'blog:delete_comment' post.publish.year post.publish.month post.publish.day post.slug child_comment.id %}"> Delete this comment </a><br/>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="reply" id="reply{{ comment.id }}_{{ forloop.counter }}" style="display: none">
+                                <div class="content-cmt">
+                                    <span class="name-cmt">{{ child_comment.name }}</span>
+                                    <span class="date-cmt">{{ child_comment.created|timesince }} ago</span>
+                                    <p class="content-reply">  {{ child_comment.body }}  </p>
+                                    {% if user.is_authenticated %}
+                                        <a href="{% url 'blog:delete_comment' post.publish.year post.publish.month post.publish.day post.slug child_comment.id %}"> Delete this comment </a><br/>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% if comment.children|length > 3 %}
+                    <p id="showreply{{ comment.id }}" onclick="showreplyFunction({{ comment.id }}, {{ comment.children|length }})"> Show more </p>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>

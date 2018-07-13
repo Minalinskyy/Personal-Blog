@@ -1,0 +1,58 @@
+{% extends "blog/base.html" %}
+{% block title %} Contact {% endblock %}
+
+{% block body %}
+<script>
+    $('#breadcrumbs').html('<a href="{% url 'blog:homepage' %}">Home</a>{{ title }}');
+    function sendmessage(){
+        $.ajax({
+            type: "POST",
+            data: $("#form-message").serialize(),
+            url: "{% url 'blog:subscribe' %}",
+            success: function(data){
+                if (data.success){
+                    $('#backmessage').text("Your has subscribed succesfully.");
+                    $('#backmessage').addClass('alert-success');
+                    $('#backmessage').css("display","");
+                    $('[name="name"]').val('');
+                    $('[name="email"]').val('');
+                    $('[name="message"]').val('');
+                }else{
+                    $('#backmessage').text("This email has been used for subscribing.");
+                    $('#backmessage').addClass('alert-danger');
+                    $('#backmessage').css("display","");
+                    $('[name="name"]').val('');
+                    $('[name="email"]').val('');
+                    $('[name="message"]').val('');
+                }
+            }
+        });
+    };
+</script>
+
+<div class="col-md-12 bordered_block bordered_wht_border white_txt">
+    <div class="over" data-opacity="0.6" data-color="#292929"></div>
+    <div class="col-md-12 simple_block text-left">
+        <h3> Please leave the message here, I will answer asap. </h3>
+        <h3> In emergency you can also write email to: jerry574638690@gmail.com </h3>
+        <form id="form-message" method='POST'>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="text" name="name" class="form-control form-opacity" placeholder="Name*">
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="email" class="form-control form-opacity" placeholder="E-mail*">
+                </div>
+                <div class="col-md-12">
+                    <input class="btn btn-white submit" value="Subscribe" onclick="sendmessage()">
+                </div>
+            </div>
+            <div class="row">
+                <div class="alert" role="alert" id="backmessage" style="display: none;"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

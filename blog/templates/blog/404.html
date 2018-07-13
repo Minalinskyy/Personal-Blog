@@ -1,0 +1,127 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minalinsky - 404</title>
+
+<!-- Bootstrap CSS -->
+<link href="{% static 'berg/css/bootstrap.css' %}" rel="stylesheet">
+<link href="{% static 'berg/css/docs.min.css' %}" rel="stylesheet">
+
+<!-- Font Awesome CSS -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<link href="{% static 'berg/fonts/themify-icons.css' %}" rel="stylesheet">
+
+
+<!-- Owl Carousel CSS -->
+<link href="{% static 'berg/css/owl.carousel.css' %}" rel="stylesheet">
+
+<!-- Magnific Popup core CSS file -->
+<link rel="stylesheet" href="{% static 'berg/css/magnific-popup.css' %}">
+
+<!-- Animate CSS -->
+<link rel="stylesheet" href="{% static 'berg/css/animate.css' %}">
+
+
+<!-- Theme CSS -->
+<link href="{% static 'berg/css/style.css' %}" rel="stylesheet">
+
+<!-- Google Fonts -->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+
+
+</head>
+<body>
+
+
+<!-- Passpartu -->
+<div class="passpartu passpartu_left"></div>
+<div class="passpartu passpartu_right"></div>
+<div class="passpartu passpartu_top"></div>
+<div class="passpartu passpartu_bottom"></div>
+<!-- Passpartu End -->
+
+<div class="page" id="page">
+
+    <!-- Header -->
+    <header class="no_border">
+
+        <!-- Logo -->
+        <div class="logo pull-left">
+            <a href="{% url 'blog:homepage' %}"><b>Minalinsky</b></a>
+        </div>
+
+    </header>
+    <!-- Header End -->
+
+
+<!--Intro-->
+<section class="intro" >
+
+        <div class="intro_item">
+
+            <!-- Over -->
+            <div class="over" data-opacity="0.1" data-color="#000"></div>
+            <div class="into_back image_bck"  data-image="{% static 'images/404.jpg' %}"></div>
+
+
+            <div class="inside_intro_block inside_no_header">
+                <div class="ins_int_item white_txt bordered_wht_border text-center">
+                    <div class="simple_block simple_block_sml">
+                        <h3>404</h3>
+                        <h4>
+                            The page you were looking for could not be found.
+                        </h4>
+                        <a href="{% url 'blog:homepage' %}" class="btn btn-white"><i class="ti-angle-left"></i> Back to Home Page</a>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+</section>
+<!-- Intro End -->
+
+
+
+
+
+
+
+</div>
+<!-- Page End -->
+
+
+
+<!-- JQuery -->
+<script src="{% static 'berg/js/jquery-1.11.3.min.js' %}"></script>
+<!-- WL Carousel JS -->
+<script src="{% static 'berg/js/owl.carousel.min.js' %}"></script>
+<!-- PrefixFree -->
+<script src="{% static 'berg/js/prefixfree.min.js' %}"></script>
+<!-- Magnific Popup core JS file -->
+<script src="{% static 'berg/js/jquery.magnific-popup.min.js' %}"></script>
+<!-- Textillate -->
+<script src="{% static 'berg/js/jquery.lettering.js' %}"></script>
+<!-- Countdown -->
+<script src="{% static 'berg/js/jquery.plugin.min.js' %}"></script>
+<script src="{% static 'berg/js/jquery.countdown.min.js' %}"></script>
+<!-- JQuery UI -->
+<script src="{% static 'berg/js/jquery-ui.js' %}"></script>
+<!-- Wow -->
+<script src="{% static 'berg/js/wow.js' %}"></script>
+<!-- Masonry -->
+<script src="{% static 'berg/js/masonry.pkgd.min.js' %}"></script>
+<!-- Bootstrap JS -->
+<script src="{% static 'berg/js/bootstrap.min.js' %}"></script>
+<!-- Theme JS -->
+<script src="{% static 'berg/js/script.js' %}"></script>
+
+
+</body>
+</html>
